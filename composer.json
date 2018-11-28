@@ -1,5 +1,5 @@
 {
-    "name": "9pay-wallet",
+    "name": "9pay/wallet",
     "description": "Library for use for connect with wallet 9pay",
     "type": "library",
     "version": "1.0.0",
