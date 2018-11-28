@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Ninepay\\": "src"
+            "Ninepay\\": ["src/Config", "src/Api"]
         }
     },
     "minimum-stability": "stable"
