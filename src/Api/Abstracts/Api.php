@@ -63,7 +63,7 @@ abstract class Api implements IApi
 			$headers[] = $key . ': ' . $value;
 		}
 
-		if ($method == 'GET') {
+		if ($method == 'GET' && $field != '') {
 			$url = $url . '?' . $field;
 		}
 
