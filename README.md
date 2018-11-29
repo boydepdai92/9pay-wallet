@@ -22,7 +22,10 @@ Or, if you want to get it directly from github, adding this to your composer.jso
         "9pay/wallet": "dev-master"
     }
 ```
-
+If you don't have composer.json file, use this:
+```bash
+    composer require 9pay/wallet
+```
 ### Usage
 
 #### Config
