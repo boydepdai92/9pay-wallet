@@ -42,6 +42,7 @@ sand.php
 return array(
     'url'     => 'https://example.com',
     'api_key' => 'api_key',
+    'version' => '2.1'
 );
 ```
 
@@ -50,6 +51,7 @@ production.php
 return array(
     'url'     => 'https://example.com',
     'api_key' => 'api_key',
+    'version' => '2.1'
 );
 ```
 - Array config:
@@ -59,6 +61,7 @@ You can use an array config direct. Example:
 $config = array(
     'url'     => 'https://example.com',
     'api_key' => 'api_key',
+    'version' => '2.1'
 );
 ```
 
@@ -73,6 +76,7 @@ use Ninepay\Api\Wallet;
 $config = array(
     'url'     => 'https://example.com',
     'api_key' => 'api_key',
+    'version' => '2.1'
 );
 
 $wallet = new Wallet($config);
