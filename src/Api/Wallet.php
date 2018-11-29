@@ -9,11 +9,47 @@ use Ninepay\Config\Loader;
 
 class Wallet extends Api implements IWallet
 {
-	const URL_WALLET = '/v2.1/merchant/payments';
+	const URL_WALLET = '/merchant/payments';
+
+	private $text = 'v';
 
 	private $api;
 
 	private $api_key;
+
+	private $version;
+
+	private function getValueFromKey($config, $key)
+	{
+		if (is_array($config)) {
+			if (!empty($config[$key])) {
+				$value = $config[$key];
+			} else {
+				throw new \Exception($key . ' is missing');
+			}
+		} else {
+			if ($config->has($key)) {
+				$value = $config->get($key);
+			} else {
+				throw new \Exception($key . ' is missing');
+			}
+		}
+
+		return $value;
+	}
+
+	/**
+	 * @param $config
+	 * @throws \Exception
+	 */
+	private function setParam($config)
+	{
+		$this->api = $this->getValueFromKey($config, 'url');
+
+		$this->api_key = $this->getValueFromKey($config, 'api_key');
+
+		$this->version = $this->getValueFromKey($config, 'version');
+	}
 
 	/**
 	 * @param $path
@@ -26,36 +62,7 @@ class Wallet extends Api implements IWallet
 
 		$config = new Config($loader, $defaultEnvironment);
 
-		if ($config->has('url')) {
-			$this->api = $config->get('url');
-		} else {
-			throw new \Exception('Url is missing');
-		}
-
-		if ($config->has('api_key')) {
-			$this->api_key = $config->get('api_key');
-		} else {
-			throw new \Exception('Api key is missing');
-		}
-	}
-
-	/**
-	 * @param array $config
-	 * @throws \Exception
-	 */
-	private function processConfigArray($config)
-	{
-		if (!empty($config['url'])) {
-			$this->api = $config['url'];
-		} else {
-			throw new \Exception('Url is missing');
-		}
-
-		if (!empty($config['api_key'])) {
-			$this->api_key = $config['api_key'];
-		} else {
-			throw new \Exception('Api key is missing');
-		}
+		$this->setParam($config);
 	}
 
 	/**
@@ -67,7 +74,7 @@ class Wallet extends Api implements IWallet
 	public function __construct($path, $defaultEnvironment = 'sand')
 	{
 		if (is_array($path)) {
-			$this->processConfigArray($path);
+			$this->setParam($path);
 		} else {
 			$this->processConfigFile($path, $defaultEnvironment);
 		}
@@ -87,20 +94,29 @@ class Wallet extends Api implements IWallet
 		);
 	}
 
+	private function buildPath($path)
+	{
+		return '/'. $this->text . $this->version . $path;
+	}
+
 	public function create(array $attributes)
 	{
+		$path = $this->buildPath(self::URL_WALLET);
+
 		$header = $this->getHeader();
 
-		$response = $this->call('POST', self::URL_WALLET, $header, $attributes);
+		$response = $this->call('POST', $path, $header, $attributes);
 
 		return $response;
 	}
 
 	public function query($id)
 	{
+		$path = $this->buildPath(self::URL_WALLET . '/' . $id);
+
 		$header = $this->getHeader();
 
-		$response = $this->call('GET', self::URL_WALLET . '/' . $id, $header, []);
+		$response = $this->call('GET', $path, $header, []);
 
 		return $response;
 	}
