@@ -24,7 +24,6 @@ class Config
 	 * @param string $key
 	 * @return string|array|null
 	 */
-
 	public function get($key)
 	{
 		return $this->getValue($key);
