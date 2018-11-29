@@ -87,21 +87,13 @@ class Wallet extends Api implements IWallet
 		);
 	}
 
-	private function transform($res)
-	{
-		return array(
-			'status' => $res->getStatusCode(),
-			'body'   => json_decode($res->getBody(), true)
-		);
-	}
-
 	public function create(array $attributes)
 	{
 		$header = $this->getHeader();
 
 		$response = $this->call('POST', self::URL_WALLET, $header, $attributes);
 
-		return $this->transform($response);
+		return $response;
 	}
 
 	public function query($id)
@@ -110,6 +102,6 @@ class Wallet extends Api implements IWallet
 
 		$response = $this->call('GET', self::URL_WALLET . '/' . $id, $header, []);
 
-		return $this->transform($response);
+		return $response;
 	}
 }
