@@ -35,7 +35,6 @@ class Config
 	 * @param string $key
 	 * @return bool
 	 */
-
 	public function has($key)
 	{
 		return ($this->getValue($key) !== null) ? true : false;
